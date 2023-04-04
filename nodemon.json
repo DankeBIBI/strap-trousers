@@ -1,6 +1,6 @@
 {
-    "watch":["src","index.ts"],
+    "watch":["src","index.ts","test.ts"],
     "ext":".ts,.js",
     "ignore":"",
-    "exec":"yarn tsc && cd dist && node index && cd .."
+    "exec":"yarn tsc && cd dist && node test && cd .."
 }
