@@ -1,24 +1,36 @@
 {
     "compilerOptions": {
-        "target": "ES2016", /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */
-        "module": "CommonJS", /* Specify what module code is generated. */
-        "rootDir": "./",                                  /* Specify the root folder within your source files. */
+        "target": "esnext", /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */
+        "module": "CommonJS", /* 生成的模板标准 */
+        "rootDir": "./src",
+        // "baseUrl": ".", /* Specify the root folder within your source files. */
         "declaration": true, /*生成声明文件 Generate .d.ts files from TypeScript and JavaScript files in your project. */
         // "outFile": "./",                                  /* Specify a file that bundles all outputs into one JavaScript file. If 'declaration' is true, also designates a file that bundles all .d.ts output. */
-        "outDir": "./dist", /* Specify an output folder for all emitted files. */
+        "outDir": "./dist", /* 指定输出目录 */
         "esModuleInterop": true, /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables 'allowSyntheticDefaultImports' for type compatibility. */
         // "preserveSymlinks": true,                         /* Disable resolving symlinks to their realpath. This correlates to the same flag in node. */
         "forceConsistentCasingInFileNames": true, /* Ensure that casing is correct in imports. */
         /* Type Checking */
         "strict": true, /* Enable all strict type-checking options. */
         "skipLibCheck": true, /* Skip type checking all .d.ts files. */
-        // "moduleResolution": "node"
-        // "lib": ["ES2016","ES2020","DOM"]
+        "moduleResolution": "node",
+        "lib": [
+            "ES2016",
+            "ES2020",
+            "ES5",
+            "ES2015",
+            "DOM"
+        ],
+        "removeComments": false, // 删除注释 
     },
     "exclude": [
         "./dist",
         "index.js",
         "index.d.ts",
-        // "./test.ts",
+        // "test.ts",
+        // "./src/test.ts",
+    ],
+    "include": [
+        "./src/*"
     ]
 }

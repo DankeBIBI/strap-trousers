@@ -1,7 +1,8 @@
+src/
+# dist/
 node_modules/
+test.ts
 # dist/
 yarn-error.log
 test.ts
 .VSCodeCounter
-.history
-dist/
