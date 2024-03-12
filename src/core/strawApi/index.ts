@@ -40,7 +40,7 @@ export function connectStraw<T extends createActionInsertDto<T, K>, K extends cr
     __Config = config
     return buildAction(action, config.name)
 }
-
+/**生成请求方法 */
 function buildAction<T>(params: T, name: string) {
     if (strawApis.get(name)) throw `'重复定义' -- ${name}`
     let map: any = {}
@@ -53,6 +53,9 @@ function buildAction<T>(params: T, name: string) {
                 await ApiPool.set(url, 'running')
                 return axiosRequest(url, {...params,...__Config.data}, method)
             }
+        }
+        if(params[i] && typeof params[i] === 'object'){
+            let fn: any = params[i]['fn']
         }
     }
     strawApis.set(name, map)

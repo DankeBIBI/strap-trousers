@@ -1,9 +1,25 @@
 
 export type createActionCallbackDto<T, K> = {
-    [k in keyof T]: T[k] extends (...params: infer Params) => any ? (...params: Params) => K extends Object | string | number ? K : any : never
+    [Fn_Name in keyof T]:
+    /* 当类型是Function */
+    T[Fn_Name] extends (...params: infer Params) => any ? (
+        (...params: Params) => K extends Object | string | number ?
+            K
+            :
+            any
+    ) : T[Fn_Name][keyof T[Fn_Name]] extends (...params: infer TParams) => any ? string : T[Fn_Name]['fn']
+    //  (...params: TParams) => K extends Object | string | number ? K : any : T[keyof T];
+}
+type callbackDto = {
+
 }
 export type createActionInsertDto<T, K> = {
-    [k in keyof T]: (...params: any) => (requestConfig)
+    [k in keyof T]:
+    /* 当类型是Function */
+    T[k] extends Function ? (...params: any) => (requestConfig)
+    : (requestConfig & {
+        fn: (...params: any) => any
+    })
 }
 export type requestConfig = {
     /**地址路径 */
