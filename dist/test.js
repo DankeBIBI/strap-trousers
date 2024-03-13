@@ -16,24 +16,30 @@ const api = (0, strawApi_1.connectStraw)({
     action: {
         go: () => ({
             url: 'user/list',
-            method: "GET"
-        })
+            method: "GET",
+            debounce: true
+        }),
+        ts: {
+            url: 'user/list',
+            debounce: true,
+            method: "GET",
+            fn() {
+                return {};
+            }
+        }
     }
 });
 const run = async () => {
-    try {
-        console.log(await api.go());
-    }
-    catch (e) {
-        console.error(e);
-    }
-    // console.log(await api.go());
+    console.log(api.ts());
+    // try {
+    //     console.log(await api.go());
+    // } catch (e) { console.error(e); }
 };
-const fetchTest = async () => {
-    // console.log(fetch());
-    const res = await fetch('http://127.0.0.1:8202/user/list');
-    console.log(await res.json());
-};
+// const fetchTest = async () => {
+//     // console.log(fetch());
+//     const res = await fetch('http://127.0.0.1:8202/user/list')
+//     console.log(await res.json());
+// }
 {
     run();
     // fetchTest()

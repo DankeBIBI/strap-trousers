@@ -22,7 +22,7 @@ export type createActionCallbackDto<T, K> = {
 /**
  * @description  生成straw格式化过后的配置
  */
-export type createActionInsertDto<T, K> = {
+export type createActionInsertDto<T> = {
     [k in keyof T]: T[k] extends Function ?
     (...params: any) => (requestConfig)
     :
@@ -33,7 +33,9 @@ export interface requestConfig {
     /**地址路径 */
     url: string,
     /**请求方法 */
-    method: 'get' | 'post' | 'put' | 'delete' | 'GET' | 'POST' | 'PUT' | "DELETE"
+    method: 'get' | 'post' | 'put' | 'delete' | 'GET' | 'POST' | 'PUT' | "DELETE",
+    /**开启防抖 */
+    debounce?: boolean,
 }
 export interface requestConfigTypeOfObject extends requestConfig {
     fn: (...params: any) => any
