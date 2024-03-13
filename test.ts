@@ -98,26 +98,30 @@ const api_ = connectStraw({
     config: {
         name: '12312',
         rootUrl: '12321',
+
     },
     action: {
-        go: (k?: {
+        go: (e: {
             data: Object
             value: string
         }) => ({
             url: "12312",
-            method: 'POST'
+            method: 'GET',
         }),
         ts: {
             url: '',
-            method: 'POST',
-            fn: () => { } 
+            method: "delete",
+            fn(e: {
+                a: number
+            }) {
+                return {} as {
+                    data: string
+                }
+            },
         }
     }
 })
-const a = api_.ts()
-const aa = {
-    url: '',
-    method: '',
-    /** */
-    fn: () => { }
-}
+const a = api_.ts({
+    a: 1
+})
+const b = api_.go({ data: {}, value: '1' })

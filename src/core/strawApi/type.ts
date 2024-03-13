@@ -1,32 +1,44 @@
-
+/**
+ * @description  生成straw格式化过后的配置
+ */
 export type createActionCallbackDto<T, K> = {
-    [Fn_Name in keyof T]:
-    /* 当类型是Function */
-    T[Fn_Name] extends (...params: infer Params) => any ? (
-        (...params: Params) => K extends Object | string | number ?
-            K
-            :
-            any
-    ) : T[Fn_Name][keyof T[Fn_Name]] extends (...params: infer TParams) => any ? string : T[Fn_Name]['fn']
-    //  (...params: TParams) => K extends Object | string | number ? K : any : T[keyof T];
+    [N in keyof T]: T[N] extends requestConfigTypeOfObject ?
+    /* 当继承于 requestConfigTypeOfObject时 */
+    T[N][keyof T[N]] extends (...params: infer Params) => any ? string : T[N]['fn']
+    :
+    (
+        T[N] extends (...params: infer Params) => any ?
+        (
+            (...params: Params) => K extends Object | string | number ?
+                K
+                :
+                any
+        )
+        :
+        any
+    )
 }
-type callbackDto = {
 
-}
+/**
+ * @description  生成straw格式化过后的配置
+ */
 export type createActionInsertDto<T, K> = {
-    [k in keyof T]:
-    /* 当类型是Function */
-    T[k] extends Function ? (...params: any) => (requestConfig)
-    : (requestConfig & {
-        fn: (...params: any) => any
-    })
+    [k in keyof T]: T[k] extends Function ?
+    (...params: any) => (requestConfig)
+    :
+    /* 当继承于 requestConfigTypeOfObject时 */
+    requestConfig & { fn: (...params: any) => any }
 }
-export type requestConfig = {
+export interface requestConfig {
     /**地址路径 */
     url: string,
     /**请求方法 */
     method: 'get' | 'post' | 'put' | 'delete' | 'GET' | 'POST' | 'PUT' | "DELETE"
 }
+export interface requestConfigTypeOfObject extends requestConfig {
+    fn: (...params: any) => any
+}
+
 export interface createOptions {
     /**创建连接的唯一id */
     name: string,

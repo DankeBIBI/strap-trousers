@@ -55,7 +55,7 @@ function buildAction<T>(params: T, name: string) {
             }
         }
         if(params[i] && typeof params[i] === 'object'){
-            let fn: any = params[i]['fn']
+            // let fn: any = params[i]['fn']
         }
     }
     strawApis.set(name, map)
