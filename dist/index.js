@@ -20,13 +20,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.connectStraw = exports.createConnect = exports.DKID = void 0;
 // import test from './test';
 const config_1 = __importDefault(require("./utils/config"));
-// import pk from '../package.json'
 var easeId_1 = require("./core/easeId");
 Object.defineProperty(exports, "DKID", { enumerable: true, get: function () { return easeId_1.DKID; } });
 var easeApi_1 = require("./core/easeApi");
 Object.defineProperty(exports, "createConnect", { enumerable: true, get: function () { return easeApi_1.createConnect; } });
 var strawApi_1 = require("./core/strawApi");
 Object.defineProperty(exports, "connectStraw", { enumerable: true, get: function () { return strawApi_1.connectStraw; } });
+__exportStar(require("./common"), exports);
 __exportStar(require("./core/mixComputing"), exports);
 const logo = `
          __                         __                                      

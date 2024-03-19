@@ -1,4 +1,4 @@
-import axios from "axios";
+// import axios from "axios";
 import { __Config } from ".";
 import { ApiPool } from "./store";
 
@@ -15,7 +15,7 @@ async function getAxios() {
             // if (SHOW_LOG) console.log(`执行了 ${i} 方法,结果为 ${PARAMS[i]}`);
         }
     }
-    return axios.create({
+    return __Config.lib.create({
         headers: __Config.headers,
         timeout: __Config.timeout ?? 5000,
         baseURL: __Config.rootUrl,

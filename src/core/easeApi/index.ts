@@ -7,6 +7,7 @@ let sortNum = 0
 let apiNum = 0
 
 export let
+    LIB: any = '',
     /**请求头 */
     HEADERS: any = '',
     /**请求参数 */
@@ -51,7 +52,9 @@ export let
 export class createConnect {
     private apiList: Array<apiList>
     constructor(options: createOptions) {
-        const { rootUrl,
+        const {
+            lib,
+            rootUrl,
             timeout,
             headers,
             apiList,
@@ -63,6 +66,7 @@ export class createConnect {
             defaultMethod,
             injectSubMethods,
             injectStateCode } = options
+        LIB = lib
         MINI_ADAPTER = miniAdapter ?? undefined
         ROOT_URL = rootUrl
         HEADERS = headers
@@ -73,6 +77,7 @@ export class createConnect {
         DEFAULT_METHOD = defaultMethod ?? 'POST'
         INJECT_STATE_CODE = injectStateCode ?? 201
         INJECT_SUB_METHODS = injectSubMethods ?? true
+        if (!LIB) throw '请添加lib'
         this.sortFunction(apiList)
         if (interceptors) {
             let i = '' as 'success' | 'fail' | 'beforeRequest' | 'requestFail'

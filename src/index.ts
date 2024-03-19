@@ -1,9 +1,9 @@
 // import test from './test';
 import config from './utils/config';
-// import pk from '../package.json'
 export { DKID } from './core/easeId'
 export { createConnect } from './core/easeApi'
 export { connectStraw } from './core/strawApi'
+export * from './common'
 export * from './core/mixComputing'
 const logo = `
          __                         __                                      

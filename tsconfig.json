@@ -27,8 +27,8 @@
         "./dist",
         "index.js",
         "index.d.ts",
-        // "test.ts",
-        // "./src/test.ts",
+        "test.ts",
+        "./src/test.ts",
     ],
     "include": [
         "./src/*"

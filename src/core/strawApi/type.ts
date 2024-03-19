@@ -23,13 +23,12 @@ export type createActionCallbackDto<T, K> = {
  * @description  生成straw格式化过后的配置
  */
 export type createActionInsertDto<T> = {
-    [k in keyof T]: T[k] extends Function ?
+    [K in keyof T]: T[K] extends Function ?
     (...params: any) => (requestConfig)
     :
-    /* 当继承于 requestConfigTypeOfObject时 */
-    requestConfig & { fn: (...params: any) => any }
+    requestConfigTypeOfObject
 }
-export interface requestConfig {
+export type requestConfig = {
     /**地址路径 */
     url: string,
     /**请求方法 */
@@ -37,11 +36,14 @@ export interface requestConfig {
     /**开启防抖 */
     debounce?: boolean,
 }
-export interface requestConfigTypeOfObject extends requestConfig {
+export type requestConfigTypeOfObject = requestConfig & {
     fn: (...params: any) => any
 }
+const a = {} as requestConfigTypeOfObject
 
 export interface createOptions {
+    /**请求库 | uni.request | wx.request | axios */
+    lib: any,
     /**创建连接的唯一id */
     name: string,
     /**域名 */

@@ -39,6 +39,7 @@ export function connectStraw<T extends createActionInsertDto<T>, K extends creat
 }): createActionCallbackDto<T, K['responseData']> {
     const { config, action } = options
     __Config = config
+    if (!config.lib) throw '请添加lib'
     return buildAction<T>(action, config.name)
 }
 /**生成请求方法 */

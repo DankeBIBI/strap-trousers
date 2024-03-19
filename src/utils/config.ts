@@ -1,5 +1,5 @@
 export default{
-    VERSION:'1.0.95',
+    VERSION:'1.0.98',
     easeApi:{
 
     },

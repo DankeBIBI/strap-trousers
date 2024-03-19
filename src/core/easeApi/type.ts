@@ -1,5 +1,6 @@
-import { ParamsSerializerOptions, AxiosRequestConfig } from "axios"
 export interface createOptions {
+     /**请求库 | uni.request | wx.request | axios */
+    lib: any,
     /**域名 */
     rootUrl: string,
     /**控制请求超时时间 */
@@ -23,7 +24,7 @@ export interface createOptions {
      * 如果使用 Axios ->
      * @link https://www.axios-http.cn/docs/req_config
      */
-    params?: params & object & AxiosRequestConfig & any,
+    params?: params & object & any,
     /**@description 当是小程序使用时，必须传递miniAdapter 为小程序框架的请求方法
      * @description 目前适配了 微信与uniapp
      * @example 
@@ -45,7 +46,7 @@ export interface apiList {
     /**分类名字 */
     readonly fn: string | number,
     /**列表 */
-    readonly list:readonly {
+    readonly list: readonly {
         /**接口名称 */
         readonly name: string | number
         /**接口地址 */
@@ -53,7 +54,7 @@ export interface apiList {
         /**请求方法 */
         readonly method?: 'GET' | 'POST' | 'PUT' | 'DELETE',
         /**备注 */
-        readonly mark?: string | number 
+        readonly mark?: string | number
     }[]
 }
 export type params = {
@@ -72,5 +73,5 @@ export type params = {
      *  },
      * @returns 
      */
-    paramsSerializer?: ParamsSerializerOptions
+    // paramsSerializer?: ParamsSerializerOptions
 }

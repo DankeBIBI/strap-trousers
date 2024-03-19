@@ -32,26 +32,26 @@
 
 ---
 
-### 更新情况
+## 更新情况
 
-- #### 2024-02-18
+- ### 2024-02-18
 
         🐞修复 【strawApi】 公共data不生效问题
            | 增加部分描述
 
-- #### 2024-02-02
+- ### 2024-02-02
 
         ✨ 测试 Fetch
         ✨ 修改StrawApi拦截器
         ✨ 修改EaseApi拦截器
 
-- #### 2024-01-15
+- ### 2024-01-15
 
         🦄 refactor(抽离Axios)
         🦄 refactor(抽离小程序适配器)
         ✨ feat(【StrawApi】) : 相比easeApi，更好地对输入类型支持。写法略有不同
 
-- #### 2023-08-31
+- ### 2023-08-31
 
          1:修复使用 axios 请求时，没有拼接传入的params
          2:增加 axios 动态 header 、 params。使用时在createConnect中的header|params 中需要动态数据的参数中传一个return动态参数 的方法即可

@@ -1,5 +1,4 @@
-import axios, { Axios } from "axios";
-import { BEFORE_REQUEST, DEFAULT_METHOD, FAIL, HEADERS, PARAMS, REQUEST_FAIL, REQUEST_SUCCESS, ROOT_URL, SHOW_LOG, TIME_OUT } from ".";
+import { LIB, BEFORE_REQUEST, DEFAULT_METHOD, FAIL, HEADERS, PARAMS, REQUEST_FAIL, REQUEST_SUCCESS, ROOT_URL, SHOW_LOG, TIME_OUT } from ".";
 
 export async function getAxios() {
     // const _this = this
@@ -15,7 +14,7 @@ export async function getAxios() {
             if (SHOW_LOG) console.log(`执行了 ${i} 方法,结果为 ${PARAMS[i]}`);
         }
     }
-    return axios.create({
+    return LIB.create({
         HEADERS,
         timeout: TIME_OUT ?? 5000,
         baseURL: ROOT_URL,
@@ -30,7 +29,16 @@ export async function axiosRequest(url: string | number, data: any, method: stri
     return (await axios(params)).data
 }
 /**拦截器 */
-function interceptors(Axios: Axios) {
+function interceptors(Axios: {
+    interceptors: {
+        request: {
+            use: any
+        }
+        response: {
+            use: any
+        }
+    }
+}) {
     //请求前
     Axios.interceptors.request.use((data: any) => {
         if (BEFORE_REQUEST)
