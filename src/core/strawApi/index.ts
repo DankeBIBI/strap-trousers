@@ -1,5 +1,6 @@
 import { axiosRequest } from "./axios";
 import { ApiPool, strawApis } from "./store";
+import { miniRequest } from './mini'
 import { createActionCallbackDto, createActionInsertDto, createOptions, requestConfig, requestConfigTypeOfObject } from "./type";
 export let __Config = {} as createOptions
 /**
@@ -53,7 +54,12 @@ function buildAction<T>(_params: any, name: string) {
                 if (ApiPool.get(url) === 'running') return 'running'
                 await ApiPool.set(url, 'running')
             }
-            return axiosRequest(url, { ...params, ...__Config.data }, method)
+            return getRequest({
+                lib: __Config.lib,
+                url,
+                params,
+                method
+            })
         }
     }
     for (const i in params) {
@@ -68,4 +74,17 @@ function buildAction<T>(_params: any, name: string) {
     }
     strawApis.set(name, map)
     return map as createActionCallbackDto<T, T>
+}
+
+function getRequest(e: {
+    lib: {
+        Axios?: any
+    },
+    params: any,
+    url: string,
+    method: string
+}) {
+    const { lib, params, url, method } = e
+    if (lib?.Axios) return axiosRequest(url, { ...params, ...__Config.data }, method)
+    else return miniRequest(url, __Config.data, method)
 }

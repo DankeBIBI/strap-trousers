@@ -28,5 +28,4 @@ export async function miniAdapterRequest(url: string | number, data: any, method
                 }
             })
     })
-
 }
