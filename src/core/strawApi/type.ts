@@ -17,7 +17,7 @@ export type createActionCallbackDto<T, K> = {
         :
         any
     )
-}
+} & strawInstance
 
 /**
  * @description  生成straw格式化过后的配置
@@ -39,8 +39,13 @@ export type requestConfig = {
 export type requestConfigTypeOfObject = requestConfig & {
     fn: (...params: any) => any
 }
-const a = {} as requestConfigTypeOfObject
 
+export type strawInstance = {
+    /**实例 */
+    Straw: Function,
+    /**请求缓存池 */
+    ApiPool: Map<any, string>
+}
 export interface createOptions {
     /**请求库 | uni.request | wx.request | axios */
     lib: any,

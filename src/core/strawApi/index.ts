@@ -1,5 +1,5 @@
 import { axiosRequest } from "./axios";
-import { ApiPool, strawApis } from "./store";
+import { ApiPool, Straw } from "./store";
 import { miniRequest } from './mini'
 import { createActionCallbackDto, createActionInsertDto, createOptions, requestConfig, requestConfigTypeOfObject } from "./type";
 export let __Config = {} as createOptions
@@ -41,11 +41,22 @@ export function connectStraw<T extends createActionInsertDto<T>, K extends creat
     const { config, action } = options
     __Config = config
     if (!config.lib) throw '请添加lib'
-    return buildAction<T>(action, config.name)
+    return {
+        ...buildAction<T>(action, config.name),
+        Straw: () => {
+            // let params: any = Straw.keys()
+            // for (const k in params) {
+            //     console.log("🚀 -- 》》 ~ k :", k )
+            //     // params[k] = Straw.get(k)
+            // }
+            // return params
+        },
+        ApiPool
+    }
 }
 /**生成请求方法 */
 function buildAction<T>(_params: any, name: string) {
-    if (strawApis.get(name)) throw `'重复定义' -- ${name}`
+    if (Straw.get(name)) throw `'重复定义' -- ${name}`
     let map: any = {}
     let params: requestConfigTypeOfObject[] | requestConfig[] = _params
     function setMap(i: any, url: string, method: string, debounce?: boolean) {
@@ -72,7 +83,7 @@ function buildAction<T>(_params: any, name: string) {
             setMap(i, params[i].url, params[i].method, params[i].debounce)
         }
     }
-    strawApis.set(name, map)
+    Straw.set(name, map)
     return map as createActionCallbackDto<T, T>
 }
 
