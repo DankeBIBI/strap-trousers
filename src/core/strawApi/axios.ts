@@ -35,7 +35,7 @@ function interceptors(Axios: any, url: string) {
     /**【Axios】 -- 响应状态码2XX时 */
     Axios.interceptors.response.use((res: any) => {
         __Config.interceptors?.success && __Config.interceptors?.success!(res)
-
+        removeUrlInApiPool(url)
         return res
     },
         /**【Axios】 -- 响应状态码不在2XX时 */

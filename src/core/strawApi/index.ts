@@ -37,21 +37,15 @@ export let __Config = {} as createOptions
 export function connectStraw<T extends createActionInsertDto<T>, K extends createOptions>(options: {
     config: K,
     action: T
-}): createActionCallbackDto<T, K['responseData']> {
+}): createActionCallbackDto<T, K['responseData'], K> {
     const { config, action } = options
     __Config = config
     if (!config.lib) throw '请添加lib'
     return {
         ...buildAction<T>(action, config.name),
-        Straw: () => {
-            // let params: any = Straw.keys()
-            // for (const k in params) {
-            //     console.log("🚀 -- 》》 ~ k :", k )
-            //     // params[k] = Straw.get(k)
-            // }
-            // return params
-        },
-        ApiPool
+        __Straw: Straw,
+        __ApiPool: ApiPool,
+        __Config: config
     }
 }
 /**生成请求方法 */
@@ -84,7 +78,7 @@ function buildAction<T>(_params: any, name: string) {
         }
     }
     Straw.set(name, map)
-    return map as createActionCallbackDto<T, T>
+    return map as createActionCallbackDto<T, T, any>
 }
 
 function getRequest(e: {
