@@ -8,7 +8,8 @@ function setVersion(maxPointVersion = 99) {
     if (list[lastIndex] < maxPointVersion) {
         list[lastIndex] = String(Number(list[lastIndex]) + 1)
     } else {
-
+        list[lastIndex - 1] = String(Number(list[lastIndex - 1]) + 1)
+        list[lastIndex] = 0
     }
     let NEW_VERSION = list.join('.')
     __config.version = NEW_VERSION
