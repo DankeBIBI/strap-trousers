@@ -17,7 +17,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.connectStraw = exports.createConnect = exports.DKID = void 0;
+exports.logo = exports.connectStraw = exports.createConnect = exports.DKID = void 0;
 // import test from './test';
 const config_1 = __importDefault(require("./utils/config"));
 var easeId_1 = require("./core/easeId");
@@ -28,7 +28,7 @@ var strawApi_1 = require("./core/strawApi");
 Object.defineProperty(exports, "connectStraw", { enumerable: true, get: function () { return strawApi_1.connectStraw; } });
 __exportStar(require("./common"), exports);
 __exportStar(require("./core/mixComputing"), exports);
-const logo = `
+exports.logo = `
          __                         __                                      
    _____/ /__________ _____        / /__________  __  __________  __________
   / ___/ __/ ___/ __ \`/ __ \\______/ __/ ___/ __ \\/ / / / ___/ _ \\/ ___/ ___/

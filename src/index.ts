@@ -5,7 +5,7 @@ export { createConnect } from './core/easeApi'
 export { connectStraw } from './core/strawApi'
 export * from './common'
 export * from './core/mixComputing'
-const logo = `
+export const logo = `
          __                         __                                      
    _____/ /__________ _____        / /__________  __  __________  __________
   / ___/ __/ ___/ __ \`/ __ \\______/ __/ ___/ __ \\/ / / / ___/ _ \\/ ___/ ___/
