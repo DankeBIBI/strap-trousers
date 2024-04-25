@@ -1,5 +1,6 @@
 const config = require('./package.json')
 const fs = require('fs')
+/**设置版本号 */
 function setVersion(maxPointVersion = 99) {
     let __config = config
     let __VERSION = __config.version ?? '1.0.0'
@@ -17,6 +18,7 @@ function setVersion(maxPointVersion = 99) {
     copyStyleFile()
     deleteTestFile()
 }
+/**写入版本信息 */
 function writeConfig(data) {
     fs.writeFileSync('./dist/package.json', JSON.stringify(data), () => { })
     fs.writeFileSync('./package.json', JSON.stringify(data), () => { })
@@ -41,10 +43,12 @@ function copyStyleFile() {
         write()
     }
 }
+/**删除测试文件 */
 function deleteTestFile() {
     fs.existsSync('./dist/test.js')
     fs.existsSync('./dist/test.d.ts')
 }
+/**执行 */
 function main() {
     setVersion()
 }

@@ -27,7 +27,6 @@ Object.defineProperty(exports, "createConnect", { enumerable: true, get: functio
 var strawApi_1 = require("./core/strawApi");
 Object.defineProperty(exports, "connectStraw", { enumerable: true, get: function () { return strawApi_1.connectStraw; } });
 __exportStar(require("./common"), exports);
-__exportStar(require("./core/mixComputing"), exports);
 exports.logo = `
          __                         __                                      
    _____/ /__________ _____        / /__________  __  __________  __________
