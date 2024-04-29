@@ -13,6 +13,7 @@ export async function miniRequest(url: string, data: any, method?: string) {
     method = method ?? __Config.defaultMethod
     const header = __Config.headers
     const timeout = __Config.timeout
+    url = __Config.rootUrl + url
     return new Promise<void>((resolve, reject) => {
         __Config.lib({
             url, header, data, method, timeout, ...__Config.params,
@@ -28,8 +29,8 @@ export async function miniRequest(url: string, data: any, method?: string) {
             },
             fail: (error: any) => {
                 removeUrlInApiPool(url)
-                __Config.interceptors?.requestFail && __Config.interceptors.requestFail(error.data)
-                reject(error.data)
+                __Config.interceptors?.requestFail && __Config.interceptors.requestFail(error)
+                reject(error)
             }
         })
     })

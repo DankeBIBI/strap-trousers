@@ -1,5 +1,5 @@
 export default{
-    VERSION:'1.0.101',
+    VERSION:'1.1.2',
     easeApi:{
 
     },
@@ -7,9 +7,6 @@ export default{
 
     },
     stateLibrary:{
-
-    },
-    timer:{
 
     },
     i18n:{
