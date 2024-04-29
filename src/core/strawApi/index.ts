@@ -91,5 +91,5 @@ function getRequest(e: {
 }) {
     const { lib, params, url, method } = e
     if (lib?.Axios) return axiosRequest(url, { ...params, ...__Config.data }, method)
-    else return miniRequest(url, __Config.data, method)
+    else return miniRequest(url,{ ...params, ...__Config.data }, method)
 }
