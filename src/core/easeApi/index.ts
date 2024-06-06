@@ -40,7 +40,9 @@ export let
 
 
 /**
- * easeApi 见字明义 
+ * @deprecated 建议使用 connectStraw 代替 
+ * @description connectStraw拥有对TypeScript的支持，并且拥有更多的功能且易于书写
+ * @description easeApi 见字明义 
  * 轻松封装接口
  * 最少只需在创建的createConnect对象中添加 rootUrl 与 apiList 即可完成封装
  * 

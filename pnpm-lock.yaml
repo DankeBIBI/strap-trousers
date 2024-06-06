@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 devDependencies:
+  '@types/xmlhttprequest':
+    specifier: ^1.8.2
+    version: 1.8.2
   axios:
     specifier: ^1.3.4
     version: registry.npmmirror.com/axios@1.3.4
@@ -20,8 +23,15 @@ devDependencies:
   typescript:
     specifier: ^4.9.5
     version: registry.npmmirror.com/typescript@4.9.5
+  xmlhttprequest:
+    specifier: ^1.8.0
+    version: 1.8.0
 
 packages:
+
+  /@types/xmlhttprequest@1.8.2:
+    resolution: {integrity: sha512-PfIzIb4tiva9bL40mOmeAe23T3QkJS2AfZ+vqgJWEJ2bxn5KUnDkikizu6TVaZRzQeThOeAn/Zh4PMkfFwEMtg==}
+    dev: true
 
   /data-uri-to-buffer@4.0.1:
     resolution: {integrity: sha512-0R9ikRb668HB7QDxT1vkpuUBtqc53YyAwMwGeUFKRojY/NWKvdZ+9UYtRfGmhqNbRkTSVpMbmyhXipFFv2cb/A==}
@@ -68,6 +78,11 @@ packages:
   /web-streams-polyfill@3.3.2:
     resolution: {integrity: sha512-3pRGuxRF5gpuZc0W+EpwQRmCD7gRqcDOMt688KmdlDAgAyaB1XlN0zq2njfDNm44XVdIouE7pZ6GzbdyH47uIQ==}
     engines: {node: '>= 8'}
+    dev: true
+
+  /xmlhttprequest@1.8.0:
+    resolution: {integrity: sha512-58Im/U0mlVBLM38NdZjHyhuMtCqa61469k2YP/AaPbvCoV9aQGUpbJBj1QRm2ytRiVQBD/fsw7L2bJGDVQswBA==}
+    engines: {node: '>=0.4.0'}
     dev: true
 
   registry.npmmirror.com/abbrev@1.1.1:

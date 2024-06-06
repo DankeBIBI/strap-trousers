@@ -48,6 +48,7 @@ export function connectStraw<T extends createActionInsertDto<T>, K extends creat
         __Config: config
     }
 }
+
 /**生成请求方法 */
 function buildAction<T>(_params: any, name: string) {
     if (Straw.get(name)) throw `'重复定义' -- ${name}`
@@ -91,5 +92,5 @@ function getRequest(e: {
 }) {
     const { lib, params, url, method } = e
     if (lib?.Axios) return axiosRequest(url, { ...params, ...__Config.data }, method)
-    else return miniRequest(url,{ ...params, ...__Config.data }, method)
+    else return miniRequest(url, { ...params, ...__Config.data }, method)
 }
