@@ -1,7 +1,7 @@
 /**
  * @description  生成straw格式化过后的配置
  */
-export type createActionCallbackDto<T, K,C> = {
+export type createActionCallbackDto<T, K, C> = {
     [N in keyof T]: T[N] extends requestConfigTypeOfObject ?
     /* 当继承于 requestConfigTypeOfObject时 */
     T[N][keyof T[N]] extends (...params: infer Params) => any ? string : T[N]['fn']
@@ -45,7 +45,12 @@ export type strawInstance<C> = {
     __Straw: Map<any, string>,
     /**请求缓存池 */
     __ApiPool: Map<any, string>,
-    __Config:C
+    __Config: C
+}
+/**请求体类型 */
+export type requestBodyDto = {
+    /**axios */
+    Axios?: any
 }
 export interface createOptions {
     /**请求库 | uni.request | wx.request | axios */

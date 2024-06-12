@@ -28,12 +28,67 @@
 
 #### 🐣 <a href="https://www.npmjs.com/package/strap-trousers">strap-trousers</a> <a><img src="https://badgen.net/npm/v/strap-trousers" alt="npm package"></a>
 
-#### 🥒 axios
+## 说明
+> 在strap-trousers中（以下用st简称）
+  StrawApi在st中是一个我比较重视的模块，也是st中的亮点，该模块用于解决、减轻在项目中api请求封装遇到的问题和时间，同时让请求封装不再繁琐
+  同时，在strap-trousers/common/mixComputing中也有分类好常用的js计算方法
 
 ---
+## 基本使用
+### 安装
+#### npm | pnpm
+```
+$ npm i strap-trousers
+```
+#### yarn  
+```
+$ yarn strap-trousers
+```
+### 使用 StrawApi
+```js
+import { connectStraw } from "strap-trousers";
+import axios from "axios"
+const test = connectStraw({
+    config: {
+        //使用请求库
+        lib: axios,
+        name: "test",
+        rootUrl: 'http://127.0.0.1:8202/',
+    },
+    action: {
+        //函数写法
+        list1: () => ({
+            url: 'user/list',
+            method: "GET",
+        }),
+          //对象写法
+        list2: {
+            url: 'user/list',
+            debounce: true,
+            method: "GET",
+            //Typescript工程下 api.object会继承fn()的出入参类型
+            fn() {
+                return {} as {
+                    data: string
+                    value: string
+                }
+            }
+        }
+    }
+})
 
+(async function(){
+    const res1 = test.list1()
+    const res2 = test.list2()
+})()
+```
 ## 更新情况
 
+- ### 2024-06-08
+
+        🦄重构 
+            |【straw】中请求体使用iife方式，减少请求判断，优化请求实际执行速度
+            
 - ### 2024-04-29
 
         🐞修复 

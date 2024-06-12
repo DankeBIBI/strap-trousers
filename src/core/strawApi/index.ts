@@ -1,7 +1,7 @@
 import { axiosRequest } from "./axios";
 import { ApiPool, Straw } from "./store";
 import { miniRequest } from './mini'
-import { createActionCallbackDto, createActionInsertDto, createOptions, requestConfig, requestConfigTypeOfObject } from "./type";
+import { createActionCallbackDto, createActionInsertDto, createOptions, requestBodyDto, requestConfig, requestConfigTypeOfObject } from "./type";
 export let __Config = {} as createOptions
 /**
  * StrawApi 
@@ -41,6 +41,7 @@ export function connectStraw<T extends createActionInsertDto<T>, K extends creat
     const { config, action } = options
     __Config = config
     if (!config.lib) throw '请添加lib'
+    requestBody.set(config.lib)
     return {
         ...buildAction<T>(action, config.name),
         __Straw: Straw,
@@ -50,22 +51,17 @@ export function connectStraw<T extends createActionInsertDto<T>, K extends creat
 }
 
 /**生成请求方法 */
-function buildAction<T>(_params: any, name: string) {
+function buildAction<T>(params: any, name: string) {
     if (Straw.get(name)) throw `'重复定义' -- ${name}`
     let map: any = {}
-    let params: requestConfigTypeOfObject[] | requestConfig[] = _params
+    params = params as requestConfigTypeOfObject[] | requestConfig[]
     function setMap(i: any, url: string, method: string, debounce?: boolean) {
         map[i] = async (params: any) => {
             if (debounce) {
                 if (ApiPool.get(url) === 'running') return 'running'
                 await ApiPool.set(url, 'running')
             }
-            return getRequest({
-                lib: __Config.lib,
-                url,
-                params,
-                method
-            })
+            return requestBody.get(url, { ...params, ...__Config.data }, method)
         }
     }
     for (const i in params) {
@@ -81,16 +77,16 @@ function buildAction<T>(_params: any, name: string) {
     Straw.set(name, map)
     return map as createActionCallbackDto<T, T, any>
 }
-
-function getRequest(e: {
-    lib: {
-        Axios?: any
-    },
-    params: any,
-    url: string,
-    method: string
-}) {
-    const { lib, params, url, method } = e
-    if (lib?.Axios) return axiosRequest(url, { ...params, ...__Config.data }, method)
-    else return miniRequest(url, { ...params, ...__Config.data }, method)
-}
+/**请求体 */
+const requestBody = (function () {
+    let body = '' as any
+    return {
+        set: (lib: requestBodyDto) => {
+            if (lib?.Axios)
+                body = axiosRequest
+            else
+                body = miniRequest
+        },
+        get: (url: string, params: string, method: string) => body(url, params, method)
+    }
+})()
