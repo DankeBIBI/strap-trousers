@@ -29,8 +29,8 @@
 #### 🐣 <a href="https://www.npmjs.com/package/strap-trousers">strap-trousers</a> <a><img src="https://badgen.net/npm/v/strap-trousers" alt="npm package"></a>
 
 ## 说明
-> 在strap-trousers中（以下用st简称）
-  StrawApi在st中是一个我比较重视的模块，也是st中的亮点，该模块用于解决、减轻在项目中api请求封装遇到的问题和时间，同时让请求封装不再繁琐
+> 在strap-trousers中
+  connectStraw模块用于解决、减轻在项目中api请求封装遇到的问题和时间，同时让请求封装不再繁琐
   同时，在strap-trousers/common/mixComputing中也有分类好常用的js计算方法
 
 ---
@@ -42,7 +42,7 @@ $ npm i strap-trousers
 ```
 #### yarn  
 ```
-$ yarn strap-trousers
+$ yarn add strap-trousers
 ```
 ### 使用 StrawApi
 ```js
