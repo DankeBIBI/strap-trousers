@@ -20,7 +20,7 @@ function setVersion(maxPointVersion = 99) {
 }
 /**写入版本信息 */
 function writeConfig(data) {
-    fs.writeFileSync('./dist/package.json', JSON.stringify(data), () => { })
+    fs.writeFileSync('./dist/src/package.json', JSON.stringify(data), () => { })
     fs.writeFileSync('./package.json', JSON.stringify(data), () => { })
 }
 /**复制文件 */
@@ -28,25 +28,25 @@ function copyStyleFile() {
     let style = fs.readFileSync('./src/style/index.css')
     let readme = fs.readFileSync('./README.md')
     let LICENSE = fs.readFileSync('./LICENSE')
-    fs.writeFileSync('./dist/README.md', readme, () => {
+    fs.writeFileSync('./dist/src/README.md', readme, () => {
     })
-    fs.writeFileSync('./dist/LICENSE', LICENSE, () => {
+    fs.writeFileSync('./dist/src/LICENSE', LICENSE, () => {
     })
     function write() {
-        fs.writeFileSync('./dist/style/index.css', style, () => {
+        fs.writeFileSync('./dist/src/style/index.css', style, () => {
         })
     }
     try {
         write()
     } catch (e) {
-        fs.mkdirSync('./dist/style')
+        fs.mkdirSync('./dist/src/style')
         write()
     }
 }
 /**删除测试文件 */
 function deleteTestFile() {
-    fs.existsSync('./dist/test.js')
-    fs.existsSync('./dist/test.d.ts')
+    fs.existsSync('./dist/src/test.js')
+    fs.existsSync('./dist/src/test.d.ts')
 }
 /**执行 */
 function main() {
