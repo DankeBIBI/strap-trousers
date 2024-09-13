@@ -1,8 +1,8 @@
 import { axiosRequest } from "./axios";
 import { ApiPool, Straw } from "./store";
 import { miniRequest } from './mini'
-import { createActionCallbackDto, createActionInsertDto, createOptions, requestBodyDto, requestConfig, requestConfigTypeOfObject, StrawCallback } from "./type";
-export let __Config = {} as createOptions
+import { ActionDto, BuildRequestBody, createActionCallbackDto, createActionInsertDto, createOptions, Methods, requestBodyDto, requestConfig, requestConfigTypeOfObject, StrawCallback, strawInstance } from "./type";
+export let __Config: { [key: string | number]: createOptions } = {}
 /**
  * StrawApi 
  * 轻松封装接口
@@ -34,53 +34,78 @@ export let __Config = {} as createOptions
  * -
  *
  */
-export function connectStraw<T extends Function | createActionInsertDto<T>, K extends createOptions>(options: {
+export function connectStraw<T extends createActionInsertDto<T>, F, K extends createOptions>(options: {
     config: K,
-    action: T | ((e: {
-        POST: any
-        GET: any
-        DELETE: any
-        PUT: any
-    }) => T)
-}): createActionCallbackDto<T, K['responseData'], K> {
+    action: ((Q: StrawCallback<K['responseData']>) => F) | T
+}): F extends Object ? F & strawInstance<K> : createActionCallbackDto<T, K, K['responseData']> {
     const { config, action } = options
-    __Config = config
-    if (!config.lib) throw '请添加lib'
+    __Config[config.name] = config
+    if (!config.lib) throw '请添加的请求库--lib'
+    if (!config.name) throw '请添加唯一标识--name'
     requestBody.set(config.lib)
     return {
-        ...buildAction<T>(action, config.name),
+        ...buildAction<T, K, K['responseData']>(action as createActionInsertDto<T> | ((Q: StrawCallback<K>) => T), config.name),
         __Straw: Straw,
         __ApiPool: ApiPool,
-        __Config: config
-    }
+        __Config: config,
+    } as any
 }
 
 /**生成请求方法 */
-function buildAction<T>(params: any, name: string) {
+function buildAction<T, K, C>(action: createActionInsertDto<T> | ((Q: StrawCallback<K>) => T), name: string) {
     if (Straw.get(name)) throw `'重复定义' -- ${name}`
     let map: any = {}
-    params = params as requestConfigTypeOfObject[] | requestConfig[]
-    function setMap(i: any, url: string, method: string, debounce?: boolean) {
+    let params = action as requestConfigTypeOfObject[] | requestConfig[]
+    const config = __Config[name]
+    const setMap = (i: any, url: string, method: string, debounce?: boolean) => {
         map[i] = async (params: any) => {
             if (debounce) {
                 if (ApiPool.get(url) === 'running') return 'running'
                 await ApiPool.set(url, 'running')
             }
-            return requestBody.get(url, { ...params, ...__Config.data }, method)
+            return requestBody.get({
+                name,
+                url,
+                data: { ...params, ...config.data },
+                method
+            })
         }
     }
-    for (const i in params) {
-        if (params[i] && typeof params[i] === 'function') {
-            let fn: any = params[i]
-            let { url, method, debounce } = fn() as requestConfig
-            setMap(i, url, method, debounce)
+    const ActionMap = async (e: ActionDto, method: Methods) => {
+        const { debounce, url } = e
+        if (debounce) {
+            if (ApiPool.get(url) === 'running') return 'running'
+            await ApiPool.set(url, 'running')
         }
-        if (params[i] && typeof params[i] === 'object') {
-            setMap(i, params[i].url, params[i].method, params[i].debounce)
+        return requestBody.get({
+            name,
+            url,
+            data: { ...params, ...__Config.data },
+            method
+        }) as K
+
+    }
+    if (typeof action === 'function') {
+        map = action({
+            POST: e => ActionMap(e, 'POST'),
+            GET: e => ActionMap(e, 'GET'),
+            PUT: e => ActionMap(e, 'PUT'),
+            DELETE: e => ActionMap(e, 'DELETE'),
+        }) as T
+    } else {
+        for (const i in params) {
+            if (params[i] && typeof params[i] === 'function') {
+                let fn: any = params[i]
+                let { url, method, debounce } = fn() as requestConfig
+                setMap(i, url, method, debounce)
+            }
+            if (params[i] && typeof params[i] === 'object') {
+                setMap(i, params[i].url, params[i].method, params[i].debounce)
+            }
         }
     }
     Straw.set(name, map)
-    return map as createActionCallbackDto<T, T, any>
+    return map as createActionCallbackDto<T, K, C>
 }
 /**请求体 */
 const requestBody = (function () {
@@ -92,6 +117,6 @@ const requestBody = (function () {
             else
                 body = miniRequest
         },
-        get: (url: string, params: string, method: string) => body(url, params, method)
+        get: (e: BuildRequestBody) => body(e)
     }
 })()

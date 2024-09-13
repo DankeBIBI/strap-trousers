@@ -1,5 +1,6 @@
 /**小程序适配请求 */
 import { __Config } from ".";
+import { BuildRequestBody } from "./type";
 import { formatHeaderParams, removeUrlInApiPool } from './utils'
 /**
  * 小程序适配请求
@@ -8,28 +9,30 @@ import { formatHeaderParams, removeUrlInApiPool } from './utils'
  * @param method 
  * @returns 
  */
-export async function miniRequest(url: string, data: any, method?: string) {
-    await formatHeaderParams(__Config)
-    method = method ?? __Config.defaultMethod
-    const header = __Config.headers
-    const timeout = __Config.timeout
-    url = __Config.rootUrl + url
+export async function miniRequest(e: BuildRequestBody) {
+    let { url, method, data, name } = e
+    const config = __Config[name]
+    await formatHeaderParams(config)
+    method = method ?? __Config[name].defaultMethod
+    const header = config.headers
+    const timeout = config.timeout
+    url = config.rootUrl + url
     return new Promise<void>((resolve, reject) => {
-        __Config.lib({
-            url, header, data, method, timeout, ...__Config.params,
+        config.lib({
+            url, header, data, method, timeout, ...config.params,
             success: (res: any) => {
                 removeUrlInApiPool(url)
-                if (res.statusCode == 200 || res.statusCode == __Config.injectStateCode) {
-                    __Config.interceptors?.success && __Config.interceptors?.success(res.data)
+                if (res.statusCode == 200 || res.statusCode == config.injectStateCode) {
+                    config.interceptors?.success && config.interceptors?.success(res.data)
                     resolve(res.data)
                 } else {
-                    __Config.interceptors?.fail && __Config.interceptors.fail(res.data)
+                    config.interceptors?.fail && config.interceptors.fail(res.data)
                     reject(res.data)
                 }
             },
             fail: (error: any) => {
                 removeUrlInApiPool(url)
-                __Config.interceptors?.requestFail && __Config.interceptors.requestFail(error)
+                config.interceptors?.requestFail && config.interceptors.requestFail(error)
                 reject(error)
             }
         })

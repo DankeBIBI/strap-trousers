@@ -1,7 +1,8 @@
+export type Methods = 'GET' | 'POST' | 'PUT' | "DELETE"
 /**
  * @description  生成straw格式化过后的配置
  */
-export type createActionCallbackDto<T, K, C> = {
+export type createActionCallbackDto<T, C, K> = {
     [N in keyof T]: T[N] extends requestConfigTypeOfObject ?
     /* 当继承于 requestConfigTypeOfObject时 */
     T[N][keyof T[N]] extends (...params: infer Params) => any ? string : T[N]['fn']
@@ -32,7 +33,7 @@ export type requestConfig = {
     /**地址路径 */
     url: string,
     /**请求方法 */
-    method: 'get' | 'post' | 'put' | 'delete' | 'GET' | 'POST' | 'PUT' | "DELETE",
+    method: Methods,
     /**开启防抖 */
     debounce?: boolean,
 }
@@ -91,16 +92,21 @@ export interface createOptions {
     data?: Object,
     showLog?: boolean,
     injectSubMethods?: boolean
-    defaultMethod?: 'GET' | 'POST' | 'PUT' | 'DELETE',
+    defaultMethod?: Methods,
     /**注入成功状态码 考虑到某些框架成功返回 201，可以添加某个特定状态码也作为请求成功识别*/
     injectStateCode?: number,
     responseData?: any
 }
-
-
-export type StrawCallback = {
-    POST: Function,
-    GET: Function,
-    PUT: Function,
-    DELETE: Function
+export type BuildRequestBody = {
+    url: string,
+    data: any,
+    method?: string
+    name: string
+}
+export type ActionDto = Pick<requestConfig, 'url' | 'debounce'>
+export type StrawCallback<T> = {
+    POST: (e: ActionDto) => Promise<"running" | any>,
+    GET: (e: ActionDto) => Promise<"running" | any>,
+    PUT: (e: ActionDto) => Promise<"running" | any>,
+    DELETE: (e: ActionDto) => Promise<"running" | any>
 }
