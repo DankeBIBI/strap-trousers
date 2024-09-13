@@ -41,9 +41,9 @@ export function deleteSameKeyOfTheSameValue(options: {
         [index: number]: string
     };
     /**排除的值 */
-    exclude?: Array<string|number>;
+    exclude?: Array<string | number>;
 }) {
-    const { exclude,befor,after } = options
+    const { exclude, befor, after } = options
     for (const i in after) {
         for (const j in befor) {
             if (i == j && after[i] == befor[j]) {
@@ -54,3 +54,17 @@ export function deleteSameKeyOfTheSameValue(options: {
     }
     return after;
 }
+
+
+export function deepClone(obj: any) {
+    if (obj === null) return null;
+    if (typeof obj !== 'object') return obj;
+    let copy = Array.isArray(obj) ? [] : {} as any
+    for (let key in obj) {
+        if (obj.hasOwnProperty(key)) {
+            copy[key] = deepClone(obj[key as any]);
+        }
+    }
+    return copy;
+}
+

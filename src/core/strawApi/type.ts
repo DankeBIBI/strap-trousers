@@ -96,3 +96,11 @@ export interface createOptions {
     injectStateCode?: number,
     responseData?: any
 }
+
+
+export type StrawCallback = {
+    POST: Function,
+    GET: Function,
+    PUT: Function,
+    DELETE: Function
+}

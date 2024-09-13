@@ -1,7 +1,7 @@
 import { axiosRequest } from "./axios";
 import { ApiPool, Straw } from "./store";
 import { miniRequest } from './mini'
-import { createActionCallbackDto, createActionInsertDto, createOptions, requestBodyDto, requestConfig, requestConfigTypeOfObject } from "./type";
+import { createActionCallbackDto, createActionInsertDto, createOptions, requestBodyDto, requestConfig, requestConfigTypeOfObject, StrawCallback } from "./type";
 export let __Config = {} as createOptions
 /**
  * StrawApi 
@@ -34,9 +34,14 @@ export let __Config = {} as createOptions
  * -
  *
  */
-export function connectStraw<T extends createActionInsertDto<T>, K extends createOptions>(options: {
+export function connectStraw<T extends Function | createActionInsertDto<T>, K extends createOptions>(options: {
     config: K,
-    action: T
+    action: T | ((e: {
+        POST: any
+        GET: any
+        DELETE: any
+        PUT: any
+    }) => T)
 }): createActionCallbackDto<T, K['responseData'], K> {
     const { config, action } = options
     __Config = config

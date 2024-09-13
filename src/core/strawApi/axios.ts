@@ -1,14 +1,14 @@
 // import axios from "axios";
 import { __Config } from ".";
+import { deepClone } from "../../common";
 import { formatHeaderParams, removeUrlInApiPool } from './utils'
 /**【Axios】 -- 获取请求体 */
 async function getAxios() {
-    await formatHeaderParams(__Config)
     return __Config.lib.create({
-        headers: __Config.headers,
         timeout: __Config.timeout ?? 5000,
         baseURL: __Config.rootUrl,
-        ...__Config.params
+        ...__Config.params,
+        ... await formatHeaderParams(deepClone((__Config)))
     }) as axiosDto | any
 }
 /**【Axios】 -- 发起请求 */
@@ -23,6 +23,7 @@ export async function axiosRequest(url: string, data: any, method: string | unde
 function interceptors(Axios: any, url: string) {
     /**【Axios】 -- 请求前 */
     Axios.interceptors.request.use((data: any) => {
+        console.log("🚀 -- 》》 ~ data:", data.headers)
         __Config.interceptors?.beforeRequest && __Config.interceptors.beforeRequest!(data)
         return data
     },

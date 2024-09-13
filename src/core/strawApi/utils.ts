@@ -2,7 +2,6 @@ import { ApiPool } from "./store"
 
 /**
  * @description 格式化请求头
- * @param __Config 
  */
 export async function formatHeaderParams(__Config: any) {
     for (const i in __Config.headers) {
@@ -13,6 +12,10 @@ export async function formatHeaderParams(__Config: any) {
         if (typeof __Config.params[i] == 'function') {
             __Config.params[i] = await __Config.params[i]()
         }
+    }
+    return {
+        headers: __Config.headers,
+        params: __Config.params
     }
 }
 /** 
