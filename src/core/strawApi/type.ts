@@ -102,8 +102,15 @@ export type BuildRequestBody = {
     data: any,
     method?: string
     name: string
+} & ActionDto
+export type ActionDto = Pick<requestConfig, 'url' | 'debounce'> & {
+    /**请求头 */
+    headers?: object & any,
+    /**请求参数 */
+    data?: any,
+    /**请求中断*/
+    signal?: AbortSignal
 }
-export type ActionDto = Pick<requestConfig, 'url' | 'debounce'>
 export type StrawCallback<T> = {
     POST: (e: ActionDto) => Promise<"running" | any>,
     GET: (e: ActionDto) => Promise<"running" | any>,

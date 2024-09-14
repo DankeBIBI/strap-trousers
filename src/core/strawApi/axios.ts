@@ -1,7 +1,7 @@
 // import axios from "axios";
 import { __Config } from ".";
 import { deepClone } from "../../common";
-import { BuildRequestBody } from "./type";
+import { ActionDto, BuildRequestBody } from "./type";
 import { formatHeaderParams, removeUrlInApiPool } from './utils'
 /**【Axios】 -- 获取请求体 */
 async function getAxios(name: string) {
@@ -14,19 +14,27 @@ async function getAxios(name: string) {
     }) as axiosDto | any
 }
 /**【Axios】 -- 发起请求 */
-export async function axiosRequest(e: BuildRequestBody) {
-    let { url, method, data, name } = e
-    let params: axiosRequsetDto = { url, method }
+export async function axiosRequest(e: BuildRequestBody & ActionDto) {
+    console.log("🚀 -- 》》 ~ e:", e)
+    let { url, method, data, name, headers, signal } = e
+    let params: axiosRequsetDto = { url, method, signal }
     params[method == 'GET' ? 'params' : 'data'] = data
-    let axios = await getAxios(name)
-    interceptors(axios, url, name)
-    return (await axios(params)).data
+    let Axios = await getAxios(name)
+    interceptors({ Axios, url, name, headers })
+    return (await Axios(params)).data
 }
 /**【Axios】 -- 拦截器 */
-function interceptors(Axios: any, url: string, name: string) {
+function interceptors(e: {
+    Axios: any, url: string, name: string, headers: any
+}) {
+    const { Axios, url, name, headers } = e
     let config = __Config[name]
     /**【Axios】 -- 请求前 */
     Axios.interceptors.request.use((data: any) => {
+        data.headers = {
+            ...data.headers,
+            ...headers
+        }
         config.interceptors?.beforeRequest && config.interceptors.beforeRequest!(data)
         return data
     },

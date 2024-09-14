@@ -19,10 +19,13 @@ declare global {
         request: object,
     }
     interface axiosRequsetDto {
+        [key: string]: any
         url: string | number,
         /** method 为GET 的时候用 */
         params?: any,
         data?: any,
         method: string | undefined
+        headers?: any
+        signal?: AbortSignal
     }
 }

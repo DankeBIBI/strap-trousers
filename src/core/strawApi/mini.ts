@@ -10,11 +10,11 @@ import { formatHeaderParams, removeUrlInApiPool } from './utils'
  * @returns 
  */
 export async function miniRequest(e: BuildRequestBody) {
-    let { url, method, data, name } = e
+    let { url, method, data, name, headers } = e
     const config = __Config[name]
     await formatHeaderParams(config)
     method = method ?? __Config[name].defaultMethod
-    const header = config.headers
+    const header = { ...config.headers, ...headers }
     const timeout = config.timeout
     url = config.rootUrl + url
     return new Promise<void>((resolve, reject) => {

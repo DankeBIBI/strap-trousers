@@ -79,17 +79,21 @@ function buildAction<T, K, C>(action: createActionInsertDto<T> | ((Q: StrawCallb
         }
         return requestBody.get({
             name,
-            url,
+            method,
+            ...e,
             data: { ...params, ...__Config.data },
-            method
         }) as K
 
     }
     if (typeof action === 'function') {
         map = action({
+            /**POST 请求 */
             POST: e => ActionMap(e, 'POST'),
+            /**GET 请求 */
             GET: e => ActionMap(e, 'GET'),
+            /**PUT 请求 */
             PUT: e => ActionMap(e, 'PUT'),
+            /**DELETE 请求 */
             DELETE: e => ActionMap(e, 'DELETE'),
         }) as T
     } else {

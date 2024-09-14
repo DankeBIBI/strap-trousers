@@ -6,9 +6,7 @@ const api = connectStraw({
         name: "test",
         rootUrl: 'https://api.dankebibi.cn',
         headers: {
-            'Token': () => {
-                return new Date().getTime()
-            }
+            'Token': '12312312333333333333333333333333333333333333333333klkl'
         },
         responseData: {} as {
             data: string
@@ -16,44 +14,42 @@ const api = connectStraw({
     },
     action: ({
         POST,
-        GET
+        GET,
+        DELETE,
+        PUT
     }) => ({
-        /**测试 */
-        go(): Promise<{
+        /**测试 1*/
+        test: () => {
+            const signal = new AbortSignal()
+            return GET({
+                url: '/user/list',
+                headers: {
+                    'T-Token': 'asdasd'
+                },
+                signal:signal
+            })
+        },
+        /**测试 2*/
+        go(e: {
+            name: string
+        }): Promise<{
             data: string
         }> {
             return GET({
-                url: '/'
+                url: '/user/list',
+                data: e,
+                headers: {
+                    'T-Token': 'asdasd'
+                },
             })
         }
     })
-    // action: {
-    //     /**测试 */
-    //     go: () => ({
-    //         url: '',
-    //         method: 'GET',
-    //         debounce: true
-    //     }),
-    //     //对象写法
-    //     list2: {
-    //         url: 'user/list',
-    //         debounce: true,
-    //         method: "GET",
-    //         //Typescript工程下 api.object会继承fn()的出入参类型
-    //         fn() {
-    //             return {} as {
-    //                 data: string
-    //                 value: string
-    //             }
-    //         }
-    //     }
-    // }
 });
 async function a() {
     try {
-        const res = await api.__Straw
-        console.log(res, '231312');
-    } catch (e) { console.error(e); }
+        const res = await api.test()
+        // console.log(res, '231312');
+    } catch (e) { }
 }
 a()
 
