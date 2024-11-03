@@ -1,6 +1,7 @@
 export { DKID } from './core/easeId'
 export { createConnect } from './core/easeApi'
 export { connectStraw } from './core/strawApi'
+export * from './core/strawPlus'
 export * from './common'
 export const LOGO = `
          __                         __                                      
@@ -11,6 +12,7 @@ export const LOGO = `
                    /_/                                                      
                                                       
 `
+console.log(LOGO);
 // console.log(`%c strap-trousers %c @${config.VERSION} `,'color:pink;background:#3d3d3d;padding:2px;border-radius:3px;font-weight:800','color:black;font-size:10px');
 //@ts-ignore
 // console.log(`%c strap-trousers %c @${require('./package.json').version}   `, 'color:pink;background:#3d3d3d;padding:2px;border-radius:3px;font-weight:800', 'color:black;font-size:10px');

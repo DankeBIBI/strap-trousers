@@ -44,6 +44,47 @@ $ npm i strap-trousers
 ```
 $ yarn add strap-trousers
 ```
+### 使用 StrawPlus
+```js
+import axios from "axios";
+import { connectStraw, ConnectStrawPlus, Debounce, Post, Get, Res } from "strap-trousers"
+
+/**
+ * @ConnectStrawPlus 装饰器
+ * 用于创建请求模块
+*/
+@ConnectStrawPlus({
+    lib: axios,
+    name: "test",
+    rootUrl: 'http://localhost:8202/',
+    headers: {
+        'Token': 'test_token',
+    },
+})
+class Test {
+    /**防抖*/
+    @Debounce()
+    /**Post请求*/
+    @Post('/user/login')
+    static Login(e: {
+        [key: string]: any
+    }) {
+        /** 用于收集返回Promise类型*/
+        return Res<{
+            data: any
+        }>()
+    }
+
+    /**Get请求*/
+    @Get('/user/list')
+    static List() {
+        return Res<{
+            data: any
+        }>()
+    }
+
+}
+```
 ### 使用 StrawApi
 ```js
 import { connectStraw } from "strap-trousers";
@@ -83,6 +124,12 @@ const test = connectStraw({
 })()
 ```
 ## 更新情况
+- ### 2024-11-04
+
+        ✨增加 
+            | 【StrawPlus】模块
+                使用装饰器实现接口
+              
 
 - ### 2024-07-08
 

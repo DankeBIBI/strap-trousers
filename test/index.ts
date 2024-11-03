@@ -1,5 +1,5 @@
 import axios from "axios";
-import { connectStraw } from "../src"
+import { connectStraw, ConnectStrawPlus, Debounce, Post, Res } from "../src"
 const api = connectStraw({
     config: {
         lib: axios,
@@ -26,36 +26,80 @@ const api = connectStraw({
                 headers: {
                     'T-Token': 'asdasd'
                 },
-                signal:signal
+                signal: signal
             })
         },
         /**测试 2*/
         go(e: {
-            name: string
+            [key: string]: any
         }): Promise<{
             data: string
         }> {
-            return GET({
-                url: '/user/list',
+            return POST({
+                url: '/user/login',
                 data: e,
                 headers: {
                     'T-Token': 'asdasd'
                 },
+                debounce: true
             })
         }
     })
 });
-async function a() {
-    try {
-        const res = await api.test()
-        // console.log(res, '231312');
-    } catch (e) { }
+@ConnectStrawPlus({
+    lib: axios,
+    name: "test",
+    rootUrl: 'https://api.dankebibi.cn',
+    // rootUrl: 'http://localhost:8202/',
+    headers: {
+        'Token': '12312312333333333333333333333333333333333333333333klkl',
+        appid: 1
+    },
+    responseData: {} as {
+        data: string
+    },
+})
+class Test {
+    @Debounce()
+    @Post('/user/login')
+    static Login(e: {
+        password: string,
+        user: string,
+        [key: string]: any
+    }) {
+        return Res<{
+            data: any
+        }>()
+    }
 }
-a()
+async function main() {
+    try {
+        // const res = await api.test()
+        // const res = Test.Login({
+        //     password: '123456',
+        //     user: "13425278202",
+        //     appid: "1"
+        // })
+        // const res1 = Test.Login({
+        //     password: '123456',
+        //     user: "13425278202",
+        //     appid: "1"
+        // })
+        const res = await api.go({
+            password: '123456',
+            user: "13425278202",
+            appid: "1"
+        })
+        const res1 =  api.go({
+            password: '123456',
+            user: "13425278202",
+            appid: "1"
+        })
+        console.log(res);
+        console.log(res1);
+    } catch (e) {
+        // console.log(e);
+    }
+}
+main()
 
-
-// const a = (e:{
-//     fn:()=>?
-// }) =>{
-
-// }

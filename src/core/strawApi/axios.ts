@@ -15,7 +15,6 @@ async function getAxios(name: string) {
 }
 /**【Axios】 -- 发起请求 */
 export async function axiosRequest(e: BuildRequestBody & ActionDto) {
-    console.log("🚀 -- 》》 ~ e:", e)
     let { url, method, data, name, headers, signal } = e
     let params: axiosRequsetDto = { url, method, signal }
     params[method == 'GET' ? 'params' : 'data'] = data
@@ -28,6 +27,7 @@ function interceptors(e: {
     Axios: any, url: string, name: string, headers: any
 }) {
     const { Axios, url, name, headers } = e
+    console.log("🚀 -- 》》 ~ url:", url)
     let config = __Config[name]
     /**【Axios】 -- 请求前 */
     Axios.interceptors.request.use((data: any) => {
