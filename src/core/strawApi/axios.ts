@@ -27,7 +27,6 @@ function interceptors(e: {
     Axios: any, url: string, name: string, headers: any
 }) {
     const { Axios, url, name, headers } = e
-    console.log("🚀 -- 》》 ~ url:", url)
     let config = __Config[name]
     /**【Axios】 -- 请求前 */
     Axios.interceptors.request.use((data: any) => {
