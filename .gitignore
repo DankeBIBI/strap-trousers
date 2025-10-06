@@ -5,3 +5,4 @@ test.ts
 .VSCodeCounter
 .history
 dist/
+docs/.vitepress/cache/deps/
