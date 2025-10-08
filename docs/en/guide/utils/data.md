@@ -16,9 +16,11 @@ console.log(encrypted) // Encrypted string
 ```
 
 **Parameters:**
+
 - `str` (string): String to be encrypted
 
 **Returns:**
+
 - `string`: Encrypted string
 
 ### decrypt
@@ -34,9 +36,11 @@ console.log(decrypted) // 'sensitive data'
 ```
 
 **Parameters:**
+
 - `str` (string): Encrypted string
 
 **Returns:**
+
 - `string`: Decrypted string
 
 ## Usage Examples
@@ -65,7 +69,7 @@ function sendSecureData(data) {
   const encryptedData = encryption(JSON.stringify(data))
   return fetch('/api/secure-endpoint', {
     method: 'POST',
-    body: encryptedData
+    body: encryptedData,
   })
 }
 
@@ -78,6 +82,6 @@ function receiveSecureData(encryptedData) {
 
 ## Notes
 
-- The encryption and decryption functions use the built-in [formatString](../format) function for string format conversion
-- For detailed format conversion rules, please refer to the [String Processing Tools](../format) documentation
+- The encryption and decryption functions use the built-in formatString function for string format conversion
+- For detailed format conversion rules, please refer to the String Processing Tools documentation
 - These functions are suitable for simple data encryption scenarios. For high-security requirements, please use professional encryption libraries

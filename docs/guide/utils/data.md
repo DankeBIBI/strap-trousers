@@ -72,7 +72,7 @@ class SecureStorage {
     const encrypted = encryption(JSON.stringify(value))
     localStorage.setItem(key, encrypted)
   }
-  
+
   static get(key) {
     const encrypted = localStorage.getItem(key)
     if (!encrypted) return null
@@ -84,7 +84,7 @@ class SecureStorage {
       return null
     }
   }
-  
+
   static remove(key) {
     localStorage.removeItem(key)
   }
@@ -125,29 +125,30 @@ console.log(originalParams) // 输出: { userId: '123', token: 'abc123' }
 
 ## 相关函数
 
-- [formatString](/guide/utils/format) - 字符串格式转换，用于加密/解密过程中的字符映射
-- [checkRequiredField](/guide/utils/check) - 必填字段检查
+- formatString - 字符串格式转换，用于加密/解密过程中的字符映射
 
 ### formatString 函数说明
 
-`formatString` 函数定义了字符的映射关系，用于加密和解密过程中的字符映射转换。详细文档请参考 [字符串处理工具](/guide/utils/format)。
+`formatString` 函数定义了字符的映射关系，用于加密和解密过程中的字符映射转换。详细文档请参考字符串处理工具文档。
 
 ## 性能考虑
 
 ```javascript
 // 对于大量数据的处理，建议分批进行
 function batchEncrypt(dataArray) {
-  return dataArray.map(item => encryption(JSON.stringify(item)))
+  return dataArray.map((item) => encryption(JSON.stringify(item)))
 }
 
 function batchDecrypt(encryptedArray) {
-  return encryptedArray.map(item => {
-    try {
-      return JSON.parse(decrypt(item))
-    } catch (error) {
-      console.error('解密失败:', error)
-      return null
-    }
-  }).filter(Boolean)
+  return encryptedArray
+    .map((item) => {
+      try {
+        return JSON.parse(decrypt(item))
+      } catch (error) {
+        console.error('解密失败:', error)
+        return null
+      }
+    })
+    .filter(Boolean)
 }
 ```

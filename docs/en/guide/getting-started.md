@@ -13,38 +13,39 @@ import { connectStraw } from 'strap-trousers'
 // Create API instance
 const api = connectStraw({
   config: {
-    lib: axios,                    // Request library
-    name: 'myApi',                // Unique identifier
+    lib: axios, // Request library
+    name: 'myApi', // Unique identifier
     rootUrl: 'https://api.example.com', // Root URL
-    timeout: 10000,               // Timeout (optional)
-    headers: {                    // Request headers (optional)
-      'Content-Type': 'application/json'
-    }
+    timeout: 10000, // Timeout (optional)
+    headers: {
+      // Request headers (optional)
+      'Content-Type': 'application/json',
+    },
   },
   action: {
     // Define API methods
     getUsers: () => ({
       url: '/users',
-      method: 'GET'
+      method: 'GET',
     }),
-    
+
     createUser: (data) => ({
       url: '/users',
       method: 'POST',
-      data
+      data,
     }),
-    
+
     updateUser: (id, data) => ({
       url: `/users/${id}`,
       method: 'PUT',
-      data
+      data,
     }),
-    
+
     deleteUser: (id) => ({
       url: `/users/${id}`,
-      method: 'DELETE'
-    })
-  }
+      method: 'DELETE',
+    }),
+  },
 })
 ```
 
@@ -58,12 +59,12 @@ console.log(users)
 // Create user
 const newUser = await api.createUser({
   name: 'John Doe',
-  email: 'john@example.com'
+  email: 'john@example.com',
 })
 
 // Update user
 const updatedUser = await api.updateUser(1, {
-  name: 'John Smith'
+  name: 'John Smith',
 })
 
 // Delete user
@@ -117,7 +118,7 @@ console.log(original.b.c) // 2 (original unchanged)
 // Copy same key values
 const result = copyValueOfTheSameKey({
   dataSource: { a: 1, b: 2, c: 3 },
-  targetSource: { a: 0, b: 0, d: 4 }
+  targetSource: { a: 0, b: 0, d: 4 },
 })
 console.log(result) // { a: 1, b: 2, d: 4 }
 ```
@@ -129,7 +130,7 @@ import { splitTime } from 'strap-trousers'
 
 // Calculate time difference
 const timeDiff = splitTime({
-  time: '2024-12-31 23:59:59'
+  time: '2024-12-31 23:59:59',
 })
 console.log(timeDiff)
 // { year: 0, month: 0, week: 0, day: 1, hour: 2, minute: 30, second: 45 }
@@ -144,14 +145,14 @@ const api = connectStraw({
     lib: { Axios: wx.request },
     name: 'wechatApi',
     rootUrl: 'https://api.example.com',
-    miniAdapter: wx.request
+    miniAdapter: wx.request,
   },
   action: {
     getUserInfo: () => ({
       url: '/user/info',
-      method: 'GET'
-    })
-  }
+      method: 'GET',
+    }),
+  },
 })
 ```
 
@@ -160,4 +161,3 @@ const api = connectStraw({
 - [StrawApi Guide](./straw-api) - Learn more about functional API encapsulation
 - [StrawPlus Guide](./straw-plus) - Learn about decorator-based API encapsulation
 - [Utility Functions](../utils/) - Explore more utility functions
-- [TypeScript Support](./typescript) - Learn about TypeScript support
