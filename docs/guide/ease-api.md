@@ -116,6 +116,7 @@ const result2 = await api.user.login({ username: 'admin', password: '123' })
 2. **TypeScript支持差**：缺乏完整的类型推断
 3. **使用方式不直观**：方法调用方式不够直观
 4. **功能局限**：扩展性和灵活性不足
+5. **维护困难**：基于类的封装增加了维护难度，不利于代码复用
 
 ## 相关链接
 

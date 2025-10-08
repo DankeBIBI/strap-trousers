@@ -1,5 +1,7 @@
 # EaseApi
 
+EaseApi is the traditional class-based API encapsulation method in Strap-Trousers, which has been deprecated. It is recommended to use StrawApi as an alternative.
+
 :::warning Deprecated
 EaseApi is deprecated. It is recommended to use [StrawApi](./straw-api) instead.
 :::
@@ -192,4 +194,3 @@ await api.deleteUser(1)
 
 - [StrawApi Guide](./straw-api) - Recommended API encapsulation solution
 - [StrawPlus Guide](./straw-plus) - Decorator-based API encapsulation
-- [Migration Guide](./migration) - Detailed migration guide
