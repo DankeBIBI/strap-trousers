@@ -1,0 +1,465 @@
+/* 全局样式 */
+
+/* 全局样式变量 */
+:root {
+  --console-bg: #1a1a1a;
+  --console-text: #e0e0e0;
+  --console-border: #333;
+  --console-header-bg: #2a2a2a;
+  --console-log: #3b82f6;
+  --console-error: #ef4444;
+  --console-warn: #f59e0b;
+  --console-info: #10b981;
+  --console-debug: #8b5cf6;
+}
+
+/* 控制台组件样式 */
+.console-container {
+  background-color: var(--console-bg);
+  border: 1px solid var(--console-border);
+  border-radius: 8px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+  margin-bottom: 1rem;
+}
+
+.console-header {
+  background-color: var(--console-header-bg);
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--console-border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.console-title {
+  color: var(--console-text);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.console-controls {
+  display: flex;
+  gap: 8px;
+}
+
+.console-button {
+  background: none;
+  border: none;
+  color: var(--console-text);
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  opacity: 0.8;
+  transition: opacity 0.2s;
+}
+
+.console-button:hover {
+  opacity: 1;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.console-content {
+  padding: 16px;
+  max-height: 400px;
+  overflow-y: auto;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.console-message {
+  padding: 8px 12px;
+  margin-bottom: 4px;
+  border-radius: 4px;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.console-message:last-child {
+  margin-bottom: 0;
+}
+
+.console-badge {
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  min-width: 45px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.console-message.log {
+  background-color: rgba(59, 130, 246, 0.1);
+  border-left: 3px solid var(--console-log);
+  color: #60a5fa;
+}
+
+.console-message.error {
+  background-color: rgba(239, 68, 68, 0.1);
+  border-left: 3px solid var(--console-error);
+  color: #f87171;
+}
+
+.console-message.warn {
+  background-color: rgba(245, 158, 11, 0.1);
+  border-left: 3px solid var(--console-warn);
+  color: #fbbf24;
+}
+
+.console-message.info {
+  background-color: rgba(16, 185, 129, 0.1);
+  border-left: 3px solid var(--console-info);
+  color: #34d399;
+}
+
+.console-message.debug {
+  background-color: rgba(139, 92, 246, 0.1);
+  border-left: 3px solid var(--console-debug);
+  color: #a78bfa;
+}
+
+.console-badge.log {
+  background-color: var(--console-log);
+  color: white;
+}
+
+.console-badge.error {
+  background-color: var(--console-error);
+  color: white;
+}
+
+.console-badge.warn {
+  background-color: var(--console-warn);
+  color: white;
+}
+
+.console-badge.info {
+  background-color: var(--console-info);
+  color: white;
+}
+
+.console-badge.debug {
+  background-color: var(--console-debug);
+  color: white;
+}
+
+.console-stats {
+  background-color: var(--console-header-bg);
+  padding: 8px 16px;
+  border-top: 1px solid var(--console-border);
+  font-size: 11px;
+  color: var(--console-text);
+  opacity: 0.7;
+}
+
+/* 自定义滚动条样式 */
+.console-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.console-content::-webkit-scrollbar-track {
+  background: var(--console-bg);
+  border-radius: 4px;
+}
+
+.console-content::-webkit-scrollbar-thumb {
+  background: #374151;
+  border-radius: 4px;
+}
+
+.console-content::-webkit-scrollbar-thumb:hover {
+  background: #4b5563;
+}
+
+/* 通用组件样式 */
+.component-container {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.component-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 16px;
+}
+
+.button {
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+  outline: none;
+}
+
+.button-primary {
+  background-color: #2563eb;
+  color: white;
+}
+
+.button-primary:hover {
+  background-color: #1d4ed8;
+}
+
+.button-secondary {
+  background-color: #6b7280;
+  color: white;
+}
+
+.button-secondary:hover {
+  background-color: #4b5563;
+}
+
+.button-success {
+  background-color: #059669;
+  color: white;
+}
+
+.button-success:hover {
+  background-color: #047857;
+}
+
+.button-danger {
+  background-color: #dc2626;
+  color: white;
+}
+
+.button-danger:hover {
+  background-color: #b91c1c;
+}
+
+.input {
+  padding: 8px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: border-color 0.2s;
+}
+
+.input:focus {
+  border-color: #2563eb;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.textarea {
+  padding: 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  resize: vertical;
+  min-height: 100px;
+}
+
+.textarea:focus {
+  border-color: #2563eb;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.select {
+  padding: 8px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 14px;
+  background-color: white;
+  cursor: pointer;
+}
+
+.select:focus {
+  border-color: #2563eb;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+/* 结果项样式 */
+.result-item {
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.result-item.success {
+  background-color: #f0fdf4;
+  border-color: #bbf7d0;
+  color: #166534;
+}
+
+.result-item.error {
+  background-color: #fef2f2;
+  border-color: #fecaca;
+  color: #991b1b;
+}
+
+.result-item.warning {
+  background-color: #fefce8;
+  border-color: #fef08a;
+  color: #854d0e;
+}
+
+.result-item.info {
+  background-color: #eff6ff;
+  border-color: #bfdbfe;
+  color: #1e40af;
+}
+
+/* 标签页样式 */
+.tab-container {
+  border-bottom: 2px solid #e5e7eb;
+  margin-bottom: 20px;
+}
+
+.tab-list {
+  display: flex;
+  gap: 8px;
+}
+
+.tab-button {
+  padding: 8px 16px;
+  background: none;
+  border: none;
+  font-size: 14px;
+  font-weight: 500;
+  color: #6b7280;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+}
+
+.tab-button:hover {
+  color: #374151;
+}
+
+.tab-button.active {
+  color: #2563eb;
+  border-bottom-color: #2563eb;
+}
+
+/* 网格布局 */
+.grid {
+  display: grid;
+  gap: 16px;
+}
+
+.grid-cols-1 {
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+
+@media (min-width: 640px) {
+  .sm\\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .lg\\:grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* 工具类 */
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.font-bold {
+  font-weight: 700;
+}
+
+.text-sm {
+  font-size: 14px;
+}
+
+.text-xs {
+  font-size: 12px;
+}
+
+.text-lg {
+  font-size: 18px;
+}
+
+.text-xl {
+  font-size: 20px;
+}
+
+.uppercase {
+  text-transform: uppercase;
+}
+
+.italic {
+  font-style: italic;
+}
+
+.break-all {
+  word-break: break-all;
+}
+
+.whitespace-pre-wrap {
+  white-space: pre-wrap;
+}
+
+.opacity-50 {
+  opacity: 0.5;
+}
+
+.opacity-75 {
+  opacity: 0.75;
+}
+
+.opacity-60 {
+  opacity: 0.6;
+}
+
+/* 动画 */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+/* 状态样式 */
+.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.loading {
+  position: relative;
+  pointer-events: none;
+}
+
+.loading::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 16px;
+  height: 16px;
+  margin: -8px 0 0 -8px;
+  border: 2px solid transparent;
+  border-top-color: #2563eb;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
