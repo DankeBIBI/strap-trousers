@@ -6,12 +6,10 @@ export * from './core/strawPlus'
 export const LOGO = `
          __                         __                                      
    _____/ /__________ _____        / /__________  __  __________  __________
-  / ___/ __/ ___/ __ \`/ __ \\______/ __/ ___/ __ \\/ / / / ___/ _ \\/ ___/ ___/
+  / ___/ __/ ___/ __ \`/ __ \______/ __/ ___/ __ \/ / / / ___/ _ \/ ___/ ___/
  (__  ) /_/ /  / /_/ / /_/ /_____/ /_/ /  / /_/ / /_/ (__  )  __/ /  (__  ) 
-/____/\\__/_/   \\__,_/ .___/      \\__/_/  \\____/ \\__,_/____/\\___/_/  /____/  
+/____/\__/_/   \__,_/ .___/      \__/_/  \____/ \__,_/____/\___/_/  /____/  
                    /_/                                                      
-                                                      
 `
-console.log(LOGO)
-//@ts-ignore
-// console.log(`%c strap-trousers %c @${require('./package.json').version}   `, 'color:pink;background:#3d3d3d;padding:2px;border-radius:3px;font-weight:800', 'color:black;font-size:10px');
+// 移除自动打印 Logo，避免污染生产环境日志。如需打印请手动调用:
+// import { LOGO } from 'strap-trousers'; console.log(LOGO);

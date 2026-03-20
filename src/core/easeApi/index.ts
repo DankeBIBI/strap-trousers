@@ -1,4 +1,3 @@
-import { axiosRequest } from './axios'
 import { miniAdapterRequest } from './miniAdapter'
 import type { apiList, createOptions } from './type'
 /**分类数 */
@@ -6,50 +5,37 @@ let sortNum = 0
 /**接口数 */
 let apiNum = 0
 
-export let LIB: any = '',
-  /**请求头 */
-  HEADERS: any = '',
-  /**请求参数 */
-  PARAMS: any = '',
-  /**请求参数 */
-  DATA: any = {},
-  /**是否显示日志 */
-  SHOW_LOG: boolean | undefined = false,
-  /**最大 请求时间 */
-  TIME_OUT: number | undefined = 10000,
-  /**根接口 */
-  ROOT_URL: string | undefined = '',
-  /**请求前执行 */
-  BEFORE_REQUEST: Function | undefined,
-  /**请求失败 */
-  REQUEST_FAIL: Function | undefined,
-  /**请求返回的状态码 不在 200 或者 _injectStateCode */
-  FAIL: Function | undefined,
-  /**请求成功 */
-  REQUEST_SUCCESS: Function | undefined,
-  /**注入的成功状态码 */
-  INJECT_STATE_CODE: Number,
-  /**小程序适配器 */
-  MINI_ADAPTER: Function | undefined,
-  /**设置默认的请求方式 */
-  DEFAULT_METHOD: string | undefined,
-  /**是否将接口提升至一级 */
-  INJECT_SUB_METHODS: Boolean | undefined
+export let SHOW_LOG: boolean | undefined = false
 
-/**
- * @deprecated 建议使用 connectStraw 代替
- * @description connectStraw拥有对TypeScript的支持，并且拥有更多的功能且易于书写
- * @description easeApi 见字明义
- * 轻松封装接口
- * 最少只需在创建的createConnect对象中添加 rootUrl 与 apiList 即可完成封装
- *
- * @author DANKEBIBI <1580074116@qq.com>
- * @param {string} rootUrl 请求根路径
- * @param {Array<apiList>} apiList 接口队列
- * @param {}
- */
 export class createConnect {
   apiList: Array<apiList>
+  /**请求库实例 */
+  private _lib: any
+  /**请求头 */
+  HEADERS: any
+  /**请求参数 */
+  PARAMS: any
+  /**请求参数 */
+  DATA: any
+  /**最大请求时间 */
+  TIME_OUT: number
+  /**根接口 */
+  ROOT_URL: string
+  /**请求前执行 */
+  BEFORE_REQUEST: Function | undefined
+  /**请求失败 */
+  REQUEST_FAIL: Function | undefined
+  /**请求返回的状态码不在200或者_injectStateCode */
+  FAIL: Function | undefined
+  /**请求成功 */
+  REQUEST_SUCCESS: Function | undefined
+  /**小程序适配器 */
+  MINI_ADAPTER: Function | undefined
+  /**设置默认的请求方式 */
+  DEFAULT_METHOD: string
+  /**axios实例缓存，避免拦截器重复注册 */
+  private _axiosInstance: any = null
+
   constructor(options: createOptions) {
     const {
       lib,
@@ -63,41 +49,95 @@ export class createConnect {
       data,
       showLog,
       defaultMethod,
-      injectSubMethods,
-      injectStateCode,
     } = options
-    LIB = lib
-    MINI_ADAPTER = miniAdapter ?? undefined
-    ROOT_URL = rootUrl
-    HEADERS = headers
-    TIME_OUT = timeout
-    PARAMS = params
-    DATA = data
-    SHOW_LOG = showLog
-    DEFAULT_METHOD = defaultMethod ?? 'POST'
-    INJECT_STATE_CODE = injectStateCode ?? 201
-    INJECT_SUB_METHODS = injectSubMethods ?? true
-    if (!LIB) throw '请添加lib'
-    this.sortFunction(apiList)
+    if (!lib) throw '请添加lib'
+
+    this._lib = lib
+    this.ROOT_URL = rootUrl ?? ''
+    this.HEADERS = headers ?? {}
+    this.TIME_OUT = timeout ?? 10000
+    this.PARAMS = params ?? {}
+    this.DATA = data ?? {}
+    this.DEFAULT_METHOD = defaultMethod ?? 'POST'
+    SHOW_LOG = showLog ?? false
+    this.MINI_ADAPTER = miniAdapter ?? undefined
+
     if (interceptors) {
       let i = '' as 'success' | 'fail' | 'beforeRequest' | 'requestFail'
       for (i in interceptors) {
         if (interceptors[i] && typeof interceptors[i] != 'function') throw `${i}必须为一个函数!`
       }
-      REQUEST_SUCCESS = interceptors['success'] ?? undefined
-      FAIL = interceptors['fail'] ?? undefined
-      BEFORE_REQUEST = interceptors['beforeRequest'] ?? undefined
-      REQUEST_FAIL = interceptors['requestFail'] ?? undefined
+      this.REQUEST_SUCCESS = interceptors['success'] ?? undefined
+      this.FAIL = interceptors['fail'] ?? undefined
+      this.BEFORE_REQUEST = interceptors['beforeRequest'] ?? undefined
+      this.REQUEST_FAIL = interceptors['requestFail'] ?? undefined
     }
+
     if (!apiList) throw '必须声明接口数组'
     this.apiList = apiList
+
+    this.sortFunction(apiList)
   }
+
+  /**获取axios实例（拦截器仅注册一次） */
+  async getAxiosInstance() {
+    if (this._axiosInstance) return this._axiosInstance
+    // 动态执行headers和params中的函数
+    for (const i in this.HEADERS) {
+      if (typeof this.HEADERS[i] == 'function') {
+        this.HEADERS[i] = await this.HEADERS[i]()
+        if (SHOW_LOG) console.log(`执行了 ${i} 方法,结果为 ${this.HEADERS[i]}`)
+      }
+    }
+    for (const i in this.PARAMS) {
+      if (typeof this.PARAMS[i] == 'function') {
+        this.PARAMS[i] = await this.PARAMS[i]()
+        if (SHOW_LOG) console.log(`执行了 ${i} 方法,结果为 ${this.PARAMS[i]}`)
+      }
+    }
+    const instance = this._lib.create({
+      headers: this.HEADERS,
+      timeout: this.TIME_OUT,
+      baseURL: this.ROOT_URL,
+      ...this.PARAMS,
+    })
+    // 拦截器只注册一次
+    instance.interceptors.request.use(
+      (data: any) => {
+        if (this.BEFORE_REQUEST) this.BEFORE_REQUEST!(data)
+        return data
+      },
+      (error: any) => {
+        if (this.REQUEST_FAIL) this.REQUEST_FAIL!(error)
+        return Promise.reject(error)
+      }
+    )
+    instance.interceptors.response.use(
+      (res: any) => {
+        if (this.REQUEST_SUCCESS) this.REQUEST_SUCCESS!(res.data)
+        return res
+      },
+      (error: any) => {
+        if (this.FAIL) this.FAIL!(error.data)
+        return Promise.reject(error)
+      }
+    )
+    this._axiosInstance = instance
+    return instance
+  }
+
+  private async axiosRequest(url: string | number, data: any, method: string | undefined = this.DEFAULT_METHOD) {
+    const axios = await this.getAxiosInstance()
+    let params: IAxiosRequestDto = { url, method }
+    params[method == 'GET' ? 'params' : 'data'] = data
+    return (await axios(params)).data
+  }
+
   /**
    * 将分类方法化
    * @param apiList
    */
   private sortFunction(apiSortList: Array<apiList>) {
-    // const _this = this
     let list: any = {}
     for (const i in apiSortList) {
       sortNum += 1
@@ -105,13 +145,9 @@ export class createConnect {
       let miniFunctionList: any = {}
       list[`${apiListParams.fn}`] = async (requestName: string | number, params: any) => {
         if (!requestName) throw '请填写请求路径'
-        let /**二级接口地址 */
-          apiUrl,
-          /**二级接口请求方法 */
-          apiMethod,
-          /**二级接口列表 */
+        let apiUrl = '',
+          apiMethod: string = 'POST',
           apiList = apiSortList[i].list,
-          /**开始时间 */
           start = new Date().getTime()
         for (const j in apiList) {
           if (
@@ -119,7 +155,7 @@ export class createConnect {
             apiList[j].name === requestName ||
             apiList[j].mark === requestName
           ) {
-            apiUrl = apiList[j].url
+            apiUrl = apiList[j].url as string
             apiMethod = apiList[j].method ?? 'POST'
             if (SHOW_LOG)
               console.log(
@@ -131,46 +167,38 @@ export class createConnect {
         if (!apiUrl) throw '该路径不存在，请检查apiList配置项'
         const data = {
           ...params,
-          ...DATA,
+          ...this.DATA,
         }
-        if (MINI_ADAPTER) {
-          if (BEFORE_REQUEST) BEFORE_REQUEST(params)
-          return miniAdapterRequest(apiUrl, data, apiMethod)
+        if (this.MINI_ADAPTER) {
+          if (this.BEFORE_REQUEST) this.BEFORE_REQUEST(params)
+          return miniAdapterRequest(this, apiUrl, data, apiMethod)
         } else {
-          return axiosRequest(apiUrl, data, apiMethod)
+          return this.axiosRequest(apiUrl, data, apiMethod)
         }
       }
       for (const key in apiListParams.list) {
         apiNum += 1
-        miniFunctionList[`${apiListParams.list[key].name}`] = async (params: any) => {
-          const miniFunctionListUrl = apiListParams.list[key].url
-          const miniFunctionListMethod = apiListParams.list[key].method
-          if (!miniFunctionListUrl) throw '该路径不存在，请检查apiList配置项'
+        const item = apiListParams.list[key]
+        const secFunName = item.name
+        miniFunctionList[secFunName] = async (params: any) => {
+          if (!item.url) throw '该路径不存在，请检查apiList配置项'
           const data = {
             ...params,
-            ...DATA,
+            ...this.DATA,
           }
-          if (MINI_ADAPTER) {
-            if (BEFORE_REQUEST) BEFORE_REQUEST(params)
-            return miniAdapterRequest(miniFunctionListUrl, data, miniFunctionListMethod)
+          if (this.MINI_ADAPTER) {
+            if (this.BEFORE_REQUEST) this.BEFORE_REQUEST(params)
+            return miniAdapterRequest(this, item.url, data, item.method)
           } else {
-            return axiosRequest(miniFunctionListUrl, data, miniFunctionListMethod)
+            return this.axiosRequest(item.url, data, item.method)
           }
         }
         Object.assign(list[`${apiListParams.fn}`], miniFunctionList)
-        /**是否将接口提升至一级 */
-        if (INJECT_SUB_METHODS) {
-          let secFunName = apiListParams.list[key].name
-          list[
-            typeof list[apiListParams.list[key].name] == 'function'
-              ? `${apiListParams.fn}_${secFunName}`
-              : secFunName
-          ] = miniFunctionList[secFunName]
-        }
       }
     }
     Object.assign(this, list)
   }
+
   static getRouterNums() {
     return apiNum
   }
