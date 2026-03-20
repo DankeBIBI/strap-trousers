@@ -2,6 +2,7 @@
 import { __Config } from "."
 import { BuildRequestBody } from "./type"
 import { formatHeaderParams, removeUrlInApiPool } from './utils'
+import { deepClone } from '../../common'
 
 /**
  * 小程序适配请求
@@ -13,7 +14,7 @@ export async function miniRequest(e: BuildRequestBody) {
     const config = __Config[name]
 
     // 深拷贝后格式化，避免并发请求时 header 解析乱序
-    const cloned = JSON.parse(JSON.stringify(config))
+    const cloned = deepClone(config)
     await formatHeaderParams(cloned)
 
     method = method ?? config.defaultMethod

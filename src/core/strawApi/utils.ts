@@ -16,9 +16,6 @@ export async function formatHeaderParams(config: any) {
                 config.params[i] = await config.params[i]()
         }
     }
-    return {
-        headers: config.headers,
-    }
 }
 
 /**

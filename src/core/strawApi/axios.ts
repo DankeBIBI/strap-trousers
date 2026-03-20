@@ -9,9 +9,9 @@ async function getAxios(name: string) {
   const cloned = deepClone(config)
   await formatHeaderParams(cloned)
   return config.lib.create({
-    timeout: config.timeout ?? 5000,
+    timeout: cloned.timeout ?? config.timeout ?? 5000,
     baseURL: config.rootUrl,
-    ...config.params,
+    ...cloned.params,
     headers: cloned.headers,
   }) as axiosDto | any
 }
@@ -19,9 +19,9 @@ async function getAxios(name: string) {
 /**【Axios】 -- 发起请求 */
 export async function axiosRequest(e: BuildRequestBody & ActionDto) {
   let { url, method, data, name, headers, signal } = e
-  const state = method == 'GET' || method == 'DELETE'
+  const isQuery = method == 'GET' || method == 'DELETE'
   let values: IAxiosRequestDto = { url, method, signal }
-  values[state ? 'params' : 'data'] = state ? data : data
+  values[isQuery ? 'params' : 'data'] = data
   let Axios = await getAxios(name)
   interceptors({ Axios, url, name, headers })
   return (await Axios(values)).data

@@ -82,24 +82,26 @@ export class createConnect {
   /**获取axios实例（拦截器仅注册一次） */
   async getAxiosInstance() {
     if (this._axiosInstance) return this._axiosInstance
-    // 动态执行headers和params中的函数
+    // 动态执行headers和params中的函数，存入临时变量避免污染实例属性
+    const headers: any = {}
     for (const i in this.HEADERS) {
-      if (typeof this.HEADERS[i] == 'function') {
-        this.HEADERS[i] = await this.HEADERS[i]()
-        if (SHOW_LOG) console.log(`执行了 ${i} 方法,结果为 ${this.HEADERS[i]}`)
-      }
+      headers[i] = typeof this.HEADERS[i] == 'function'
+        ? await this.HEADERS[i]()
+        : this.HEADERS[i]
+      if (SHOW_LOG) console.log(`执行了 ${i} 方法,结果为 ${headers[i]}`)
     }
+    const params: any = {}
     for (const i in this.PARAMS) {
-      if (typeof this.PARAMS[i] == 'function') {
-        this.PARAMS[i] = await this.PARAMS[i]()
-        if (SHOW_LOG) console.log(`执行了 ${i} 方法,结果为 ${this.PARAMS[i]}`)
-      }
+      params[i] = typeof this.PARAMS[i] == 'function'
+        ? await this.PARAMS[i]()
+        : this.PARAMS[i]
+      if (SHOW_LOG) console.log(`执行了 ${i} 方法,结果为 ${params[i]}`)
     }
     const instance = this._lib.create({
-      headers: this.HEADERS,
+      headers,
       timeout: this.TIME_OUT,
       baseURL: this.ROOT_URL,
-      ...this.PARAMS,
+      ...params,
     })
     // 拦截器只注册一次
     instance.interceptors.request.use(
